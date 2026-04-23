@@ -1,3 +1,13 @@
+import os
+import subprocess
+import sys
+
+# 1. 부품(openpyxl)이 없으면 실행 중에 강제로 설치합니다.
+try:
+    import openpyxl
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "openpyxl"])
+
 import streamlit as st
 import pandas as pd
 import requests
@@ -8,10 +18,14 @@ from datetime import datetime
 try:
     CLIENT_ID = st.secrets["NAVER_CLIENT_ID"]
     CLIENT_SECRET = st.secrets["NAVER_CLIENT_SECRET"]
-    MASTER_PASSWORD = st.secrets["APP_PASSWORD"] # 접속 비밀번호
+    MASTER_PASSWORD = st.secrets["APP_PASSWORD"]
 except:
-    st.error("보안 설정(Secrets)이 완료되지 않았습니다.")
+    st.error("보안 설정(Secrets)이 완료되지 않았습니다. Streamlit 설정에서 Secrets를 입력해주세요.")
     st.stop()
+
+# 이후 기존 코드들 (검색 로직 등)이 아래에 이어지면 됩니다.
+# 만약 아래쪽에 검색 로직이 더 있다면, 그 부분은 유지하시되 
+# 상단 부분만 이 내용으로 교체해주시면 됩니다.
 
 st.set_page_config(page_title="피싱템 보안 레이더", layout="wide")
 
